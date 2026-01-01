@@ -3,7 +3,7 @@
 Hello, I'm
 
 .home__name
-Ansel Klee
+Shaamalan Kanthan
 
 .home__education
 Frontend Developer
