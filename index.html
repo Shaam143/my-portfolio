@@ -1,575 +1,697 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-        <link rel="shortcut icon" href="assets/img/favicon.png" type="image/x-icon">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-        <link href='https://unpkg.com/boxicons@2.1.1/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="shortcut icon" href="assets/img/favicon.png" type="image/x-icon">
 
-        <link rel="stylesheet" href="https://unpkg.com/swiper@8/swiper-bundle.min.css">
+    <link href='https://unpkg.com/boxicons@2.1.1/css/boxicons.min.css' rel='stylesheet'>
 
-        <link rel="stylesheet" href="assets/css/styles.css">
+    <link rel="stylesheet" href="https://unpkg.com/swiper@8/swiper-bundle.min.css">
 
-        <title> Shaamalan Kanthan - Portfolio </title>
-    </head>
-    <body>
-        <header class="header" id="header">
-            <nav class="nav container">
-                <a href="#" class="nav__logo">Shaamalan</a>
+    <style>
+        /* Update Grid for 3 or 4 columns */
+        @media screen and (min-width: 992px) {
+            .work__container {
+                grid-template-columns: repeat(3, 1fr);
+                /* 3 items per row on laptop */
+                gap: 1.5rem;
+                max-width: 1200px;
+                margin-left: auto;
+                margin-right: auto;
+            }
+        }
 
-                <div class="nav__menu">
-                    <ul class="nav__list">
-                        <li class="nav__item">
-                            <a href="#home" class="nav__link active-link">
-                                <i class='bx bx-home-alt'></i>
-                            </a>
-                        </li>
-                        <li class="nav__item">
-                            <a href="#about" class="nav__link">
-                                <i class='bx bx-user'></i>
-                            </a>
-                        </li>
-                        <li class="nav__item">
-                            <a href="#skills" class="nav__link">
-                                <i class='bx bx-book'></i>
-                            </a>
-                        </li>
-                        <li class="nav__item">
-                            <a href="#work" class="nav__link">
-                                <i class='bx bx-briefcase-alt-2'></i>
-                            </a>
-                        </li>
-                        <li class="nav__item">
-                            <a href="#contact" class="nav__link">
-                                <i class='bx bx-message-square-detail'></i>
-                            </a>
-                        </li>
-                    </ul>
-                </div>
+        @media screen and (min-width: 1200px) {
+            .work__container {
+                grid-template-columns: repeat(4, 1fr);
+                /* 4 items per row on large screens */
+            }
+        }
 
-                <i class='bx bx-moon change-theme' id="theme-button"></i>
-            </nav>
-        </header>
+        /* Wrapper to crop the scaled-down iframe */
+        .iframe-container {
+            width: 100%;
+            height: 200px;
+            /* Adjusted height for compact cards */
+            overflow: hidden;
+            border-radius: 1rem;
+            margin-bottom: 1rem;
+            position: relative;
+            border: 1px solid #e1e1e1;
+            background-color: #f0f0f0;
+        }
 
-        <main class="main">
-            <section class="home section" id="home">
-                <div class="home__container container grid">
-                    <div class="home__data">
-                        <span class="home__greeting">Hello, I'm</span>
-                        <h1 class="home__name">Shaamalan Kanthan</h1>
-                        <h3 class="home__education">Computer Science Student</h3>
+        /* Dark theme border fix */
+        body.dark-theme .iframe-container {
+            border: 1px solid #333;
+            background-color: #1a1a1a;
+        }
 
-                        <div class="home__buttons">
-                            <a href="https://www.linkedin.com/in/shaamalan-kanthan" 
-                                target="_blank" 
-                                class="button button--ghost">
-                                    Connect with me
-                                </a>
-                            <a href="#about" class="button">About me</a>
-                        </div>
-                    </div>
+        /* Desktop View Scaler */
+        .desktop-iframe {
+            width: 400%;
+            height: 400%;
+            border: 0;
+            transform: scale(0.25);
+            transform-origin: 0 0;
+            position: absolute;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+        }
 
-                    <div class="home__handle">
-                        <img src="assets/img/perfil.png" alt="" class="home__img">
-                    </div>
+        /* Text-only card styling adjustments */
+        .work__card_text_only {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 1.5rem;
+            border: 1px solid #f0f0f0;
+            border-radius: 1rem;
+        }
 
-                    <div class="home__social">
-                        <a href="https://www.linkedin.com/in/shaamalan-kanthan/" target="_blank" class="home__social-link">
-                            <i class='bx bxl-linkedin-square'></i>
+        body.dark-theme .work__card_text_only {
+            border: 1px solid #333;
+        }
+    </style>
+
+    <link rel="stylesheet" href="assets/css/styles.css">
+
+    <title> Shaamalan Kanthan - Portfolio </title>
+</head>
+
+<body>
+    <header class="header" id="header">
+        <nav class="nav container">
+            <a href="#" class="nav__logo">Shaamalan</a>
+
+            <div class="nav__menu">
+                <ul class="nav__list">
+                    <li class="nav__item">
+                        <a href="#home" class="nav__link active-link">
+                            <i class='bx bx-home-alt'></i>
                         </a>
-                        <a href="https://github.com/Shaam143" target="_blank" class="home__social-link">
-                            <i class='bx bxl-github'></i>
-                        </a>
-                    </div>
-
-                    <a href="#about" class="home__scroll">
-                        <i class='bx bx-mouse home__scroll-icon'></i>
-                        <span class="home__scroll-name">Scroll Down</span>
-                    </a>
-                </div>
-            </section>
-            
-            <section class="about section" id="about">
-                <span class="section__subtitle">My Intro</span>
-                <h2 class="section__title">About Me</h2>
-
-                <div class="about__container container grid">
-                    <img src="assets/img/about.jpg" alt="" class="about__img">
-
-                    <div class="about__data">
-                        <div class="about__info">
-                            <div class="about__box">
-                                <i class='bx bx-award about__icon'></i>
-                                <h3 class="about__title">Experience</h3>
-                                <span class="about__subtitle">6 Months Working</span>
-                            </div>
-                            <div class="about__box">
-                                <i class='bx bx-briefcase-alt about__icon'></i>
-                                <h3 class="about__title">Completed</h3>
-                                <span class="about__subtitle">5+ Projects</span>
-                            </div>
-                            <div class="about__box">
-                                <i class='bx bx-support about__icon'></i>
-                                <h3 class="about__title">Support</h3>
-                                <span class="about__subtitle">Open to Network</span>
-                            </div>
-                        </div>
-
-                        <p class="about__description">
-                            I’m a second-year Computer Science student at UTHM specializing in web technology. 
-                            With a strong foundation in front-end and back-end development, I work with Java, HTML5, 
-                            and modern frameworks. I am actively involved in the Information Technology Club (ITC) 
-                            and eager to explore software development and digital media.
-                        </p>
-
-                        <a href="#contact" class="button">Contact Me</a>
-                    </div>
-                </div>
-            </section>
-
-            <section class="skills section" id="skills">
-                <span class="section__subtitle">My Abilities</span>
-                <h2 class="section__title">My Experience</h2>
-
-                <div class="skills__container container grid">
-                    <div class="skills__content">
-                        <h3 class="skills__title">Frontend & Mobile</h3>
-                        <div class="skills__box">
-                            <div class="skills__group">
-                                <div class="skills__data">
-                                    <i class='bx bxs-badge-check'></i>
-                                    <div>
-                                        <h3 class="skills__name">HTML/CSS</h3>
-                                        <span class="skills__level">Advanced</span>
-                                    </div>
-                                </div>
-                                <div class="skills__data">
-                                    <i class='bx bxs-badge-check'></i>
-                                    <div>
-                                        <h3 class="skills__name">JavaScript</h3>
-                                        <span class="skills__level">Intermediate</span>
-                                    </div>
-                                </div>
-                                <div class="skills__data">
-                                    <i class='bx bxs-badge-check'></i>
-                                    <div>
-                                        <h3 class="skills__name">Flutter</h3>
-                                        <span class="skills__level">Intermediate</span>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <div class="skills__group">
-                                <div class="skills__data">
-                                    <i class='bx bxs-badge-check'></i>
-                                    <div>
-                                        <h3 class="skills__name">Dart</h3>
-                                        <span class="skills__level">Intermediate</span>
-                                    </div>
-                                </div>
-                                <div class="skills__data">
-                                    <i class='bx bxs-badge-check'></i>
-                                    <div>
-                                        <h3 class="skills__name">Bootstrap</h3>
-                                        <span class="skills__level">Basic</span>
-                                    </div>
-                                </div>
-                                <div class="skills__data">
-                                    <i class='bx bxs-badge-check'></i>
-                                    <div>
-                                        <h3 class="skills__name">Git</h3>
-                                        <span class="skills__level">Intermediate</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="skills__content">
-                        <h3 class="skills__title">Backend Development</h3>
-                        <div class="skills__box">
-                            <div class="skills__group">
-                                <div class="skills__data">
-                                    <i class='bx bxs-badge-check'></i>
-                                    <div>
-                                        <h3 class="skills__name">PHP</h3>
-                                        <span class="skills__level">Intermediate</span>
-                                    </div>
-                                </div>
-                                <div class="skills__data">
-                                    <i class='bx bxs-badge-check'></i>
-                                    <div>
-                                        <h3 class="skills__name">Java</h3>
-                                        <span class="skills__level">Intermediate</span>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <div class="skills__group">
-                                <div class="skills__data">
-                                    <i class='bx bxs-badge-check'></i>
-                                    <div>
-                                        <h3 class="skills__name">Firebase</h3>
-                                        <span class="skills__level">Basic</span>
-                                    </div>
-                                </div>
-                                <div class="skills__data">
-                                    <i class='bx bxs-badge-check'></i>
-                                    <div>
-                                        <h3 class="skills__name">MySQL</h3>
-                                        <span class="skills__level">Intermediate</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <section class="skills section">
-                <span class="section__subtitle">My Journey</span>
-                <h2 class="section__title">Leadership & Work</h2>
-
-                <div class="skills__container container grid">
-                    
-                    <div class="skills__content">
-                        <h3 class="skills__title">Student Leadership</h3>
-
-                        <div class="skills__box">
-                            <div class="skills__group">
-                                <div class="skills__data">
-                                    <i class='bx bxs-medal'></i>
-                                    <div>
-                                        <h3 class="skills__name">Strategic Advisor</h3>
-                                        <span class="skills__level">ITC (2026)</span>
-                                    </div>
-                                </div>
-
-                                <div class="skills__data">
-                                    <i class='bx bxs-medal'></i>
-                                    <div>
-                                        <h3 class="skills__name">President</h3>
-                                        <span class="skills__level">ITC (2025)</span>
-                                    </div>
-                                </div>
-
-                                <div class="skills__data">
-                                    <i class='bx bxs-medal'></i>
-                                    <div>
-                                        <h3 class="skills__name">Head Prefect</h3>
-                                        <span class="skills__level">School Prefect (2025)</span>
-                                    </div>
-                                </div>
-
-                                <div class="skills__data">
-                                    <i class='bx bxs-medal'></i>
-                                    <div>
-                                        <h3 class="skills__name">Exco Multimedia</h3>
-                                        <span class="skills__level">ITC (2024)</span>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="skills__group">
-                                <div class="skills__data">
-                                    <i class='bx bxs-camera'></i>
-                                    <div>
-                                        <h3 class="skills__name">Head Photographer</h3>
-                                        <span class="skills__level">The Lasallian (2018-2025)</span>
-                                    </div>
-                                </div>
-
-                                <div class="skills__data">
-                                    <i class='bx bxs-medal'></i>
-                                    <div>
-                                        <h3 class="skills__name">Asst. Secretary</h3>
-                                        <span class="skills__level">Student Rep. Council (2021-23)</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="skills__content">
-                        <h3 class="skills__title">Work Experience</h3>
-
-                        <div class="skills__box">
-                            <div class="skills__group">
-                                <div class="skills__data">
-                                    <i class='bx bxs-briefcase-alt-2'></i>
-                                    <div>
-                                        <h3 class="skills__name">Sales Assistant</h3>
-                                        <span class="skills__level">iStore Digital Mall <br> (Aug 2024 - Sept 2025)</span>
-                                    </div>
-                                </div>
-
-                                <div class="skills__data">
-                                    <i class='bx bxs-coffee'></i>
-                                    <div>
-                                        <h3 class="skills__name">Tearista</h3>
-                                        <span class="skills__level">Tealive <br> (May 2023 - Sept 2023)</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-            </section>
-
-            <section class="services section">
-                <span class="section__subtitle">My Services</span>
-                <h2 class="section__title">What I Offer</h2>
-
-                <div class="services__container container grid">
-                    <div class="services__card">
-                        <h3 class="services__title">Web <br> Development</h3>
-                        <span class="services__button">
-                            See more <i class='bx bx-right-arrow-alt services__icon'></i>
-                        </span>
-
-                        <div class="services__modal">
-                            <div class="services__modal-content">
-                                <i class='bx bx-x services__modal-close'></i>
-                                <h3 class="services__modal-title">Web Development</h3>
-                                <p class="services__modal-description">
-                                    Creating efficient and user-friendly web applications using modern web technologies.
-                                </p>
-                                <ul class="services__modal-list">
-                                    <li class="services__modal-item">
-                                        <i class='bx bx-check services__modal-icon'></i>
-                                        <p class="services__modal-info">Responsive website design.</p>
-                                    </li>
-                                    <li class="services__modal-item">
-                                        <i class='bx bx-check services__modal-icon'></i>
-                                        <p class="services__modal-info">HTML5, CSS3, and JavaScript integration.</p>
-                                    </li>
-                                    <li class="services__modal-item">
-                                        <i class='bx bx-check services__modal-icon'></i>
-                                        <p class="services__modal-info">Backend connectivity with PHP/MySQL.</p>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="services__card">
-                        <h3 class="services__title">Mobile App <br> Development</h3>
-                        <span class="services__button">
-                            See more <i class='bx bx-right-arrow-alt services__icon'></i>
-                        </span>
-
-                        <div class="services__modal">
-                            <div class="services__modal-content">
-                                <i class='bx bx-x services__modal-close'></i>
-                                <h3 class="services__modal-title">Mobile Development</h3>
-                                <p class="services__modal-description">
-                                    Building cross-platform mobile applications that solve real-world problems.
-                                </p>
-                                <ul class="services__modal-list">
-                                    <li class="services__modal-item">
-                                        <i class='bx bx-check services__modal-icon'></i>
-                                        <p class="services__modal-info">Flutter & Dart development.</p>
-                                    </li>
-                                    <li class="services__modal-item">
-                                        <i class='bx bx-check services__modal-icon'></i>
-                                        <p class="services__modal-info">UI/UX implementation for mobile.</p>
-                                    </li>
-                                    <li class="services__modal-item">
-                                        <i class='bx bx-check services__modal-icon'></i>
-                                        <p class="services__modal-info">Integration with Firebase databases.</p>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="services__card">
-                        <h3 class="services__title">Digital <br> Media</h3>
-                        <span class="services__button">
-                            See more <i class='bx bx-right-arrow-alt services__icon'></i>
-                        </span>
-
-                        <div class="services__modal">
-                            <div class="services__modal-content">
-                                <i class='bx bx-x services__modal-close'></i>
-                                <h3 class="services__modal-title">Digital Media</h3>
-                                <p class="services__modal-description">
-                                    Designing creative visual assets for events and promotions.
-                                </p>
-                                <ul class="services__modal-list">
-                                    <li class="services__modal-item">
-                                        <i class='bx bx-check services__modal-icon'></i>
-                                        <p class="services__modal-info">Poster and banner design.</p>
-                                    </li>
-                                    <li class="services__modal-item">
-                                        <i class='bx bx-check services__modal-icon'></i>
-                                        <p class="services__modal-info">Event promotional materials.</p>
-                                    </li>
-                                    <li class="services__modal-item">
-                                        <i class='bx bx-check services__modal-icon'></i>
-                                        <p class="services__modal-info">Digital content creation.</p>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <section class="work section" id="work">
-                <span class="section__subtitle">My Portfolio</span>
-                <h2 class="section__title">Recent Works</h2>
-
-                <div class="work__filters">
-                    <span class="work__item active-work" data-filter='all'>All</span>
-                    <span class="work__item" data-filter='.web'>Web</span>
-                    <span class="work__item" data-filter='.movil'>Mobile</span>
-                    <span class="work__item" data-filter='.design'>Media</span>
-                </div>
-
-                <div class="work__container container grid">
-
-                <div class="work__container container grid">
-
-                    <!-- Smart Bill Split (Live Demo) -->
-                    <div class="work__card mix web">
-                        <img src="assets/img/work6.jpg" alt="" class="work__img">
-                        <h3 class="work__title">Smart Bill Split</h3>
-                        <span class="work__button">Web Application</span>
-                        <a href="https://smart-bill-split.vercel.app/" 
-                        target="_blank" 
-                        class="work__button">
-                            Live Demo <i class='bx bx-right-arrow-alt work__icon'></i>
-                        </a>
-                    </div>
-
-                    <!-- Restaurant Stock Management System -->
-                    <div class="work__card mix web">
-                        <img src="assets/img/work7.jpg" alt="" class="work__img">
-                        <h3 class="work__title">Restaurant Stock Management System</h3>
-                        <span class="work__button">PHP & MySQL System</span>
-                        <a href="https://www.linkedin.com/in/shaamalan-kanthan/details/projects/" 
-                        target="_blank" 
-                        class="work__button">
-                            View on LinkedIn <i class='bx bx-right-arrow-alt work__icon'></i>
-                        </a>
-                    </div>
-
-                    <!-- VibeHire -->
-                    <div class="work__card mix web">
-                        <img src="assets/img/work8.jpg" alt="" class="work__img">
-                        <h3 class="work__title">VibeHire – Job Search Website</h3>
-                        <span class="work__button">Web Application Project</span>
-                        <a href="https://www.linkedin.com/in/shaamalan-kanthan/details/projects/" 
-                        target="_blank" 
-                        class="work__button">
-                            View on LinkedIn <i class='bx bx-right-arrow-alt work__icon'></i>
-                        </a>
-                    </div>
-
-                    <!-- Personal Health & Fitness Calculator -->
-                    <div class="work__card mix web">
-                        <img src="assets/img/work9.jpg" alt="" class="work__img">
-                        <h3 class="work__title">Personal Health & Fitness Calculator</h3>
-                        <span class="work__button">SOAP Web Services</span>
-                        <a href="https://www.linkedin.com/in/shaamalan-kanthan/details/projects/" 
-                        target="_blank" 
-                        class="work__button">
-                            Documentation <i class='bx bx-right-arrow-alt work__icon'></i>
-                        </a>
-                    </div>
-
-                </div>
-
-
-            </section>
-
-            <section class="testimonial section">
-                <span class="section__subtitle">References</span>
-                <h2 class="section__title">Endorsements</h2>
-
-                <div class="testimonial__container container swiper">
-                    <div class="swiper-wrapper">
-                        <div class="testimonial__card swiper-slide">
-                            <img src="assets/img/testimonial1.png" alt="" class="testimonial__img">
-                            <h3 class="testimonial__name">Tealive Manager</h3>
-                            <p class="testimonial__description">
-                                Shaamalan showed great dedication and teamwork during his time as a Tearista.
-                            </p>
-                        </div>
-
-                        <div class="testimonial__card swiper-slide">
-                            <img src="assets/img/testimonial2.png" alt="" class="testimonial__img">
-                            <h3 class="testimonial__name">ITC President</h3>
-                            <p class="testimonial__description">
-                                A proactive member of the club, always ready to help with technical events like DINS.
-                            </p>
-                        </div>
-                    </div>
-
-                    <div class="swiper-pagination"></div>
-                </div>
-            </section>
-
-            <section class="contact section" id="contact">
-                <span class="section__subtitle">Get in touch</span>
-                <h2 class="section__title">Contact Me</h2>
-
-                <div class="contact__container container grid">
-                    <div class="contact__content">
-                        <h3 class="contact__title">Talk to me</h3>
-
-                        <div class="contact__info">
-                            <div class="contact__card">
-                                <i class='bx bx-mail-send contact__card-icon'></i>
-                                <h3 class="contact__card-title">Email</h3>
-                                <span class="contact__card-data">ai230133@student.uthm.edu.my</span>
-                                <a href="mailto:ai230133@student.uthm.edu.my" class="contact__button">
-                                    Write me <i class='bx bx-right-arrow-alt contact__button-icon'></i>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-        </main>
-
-        <footer class="footer">
-            <div class="footer__container container">
-                <h1 class="footer__title">Shaamalan</h1>
-
-                <ul class="footer__list">
-                    <li>
-                        <a href="#about" class="footer__link">About</a>
                     </li>
-                    <li>
-                        <a href="#work" class="footer__link">Projects</a>
+                    <li class="nav__item">
+                        <a href="#about" class="nav__link">
+                            <i class='bx bx-user'></i>
+                        </a>
                     </li>
-                    <li>
-                        <a href="#contact" class="footer__link">Contact</a>
+                    <li class="nav__item">
+                        <a href="#skills" class="nav__link">
+                            <i class='bx bx-book'></i>
+                        </a>
+                    </li>
+                    <li class="nav__item">
+                        <a href="#work" class="nav__link">
+                            <i class='bx bx-briefcase-alt-2'></i>
+                        </a>
+                    </li>
+                    <li class="nav__item">
+                        <a href="#contact" class="nav__link">
+                            <i class='bx bx-message-square-detail'></i>
+                        </a>
                     </li>
                 </ul>
+            </div>
 
-                <ul class="footer__social">
-                    <a href="https://www.linkedin.com/in/shaamalan-kanthan/" target="_blank" class="footer__social-link">
+            <i class='bx bx-moon change-theme' id="theme-button"></i>
+        </nav>
+    </header>
+
+    <main class="main">
+        <section class="home section" id="home">
+            <div class="home__container container grid">
+                <div class="home__data">
+                    <span class="home__greeting">Hello, I'm</span>
+                    <h1 class="home__name">Shaamalan Kanthan</h1>
+                    <h3 class="home__education">Computer Science Student</h3>
+
+                    <div class="home__buttons">
+                        <a href="https://www.linkedin.com/in/shaamalan-kanthan" target="_blank"
+                            class="button button--ghost">
+                            Connect with me
+                        </a>
+                        <a href="#about" class="button">About me</a>
+                    </div>
+                </div>
+
+                <div class="home__handle">
+                    <img src="assets/img/perfil.png" alt="" class="home__img">
+                </div>
+
+                <div class="home__social">
+                    <a href="https://www.linkedin.com/in/shaamalan-kanthan/" target="_blank" class="home__social-link">
                         <i class='bx bxl-linkedin-square'></i>
                     </a>
-                    <a href="https://github.com/Shaam143" target="_blank" class="footer__social-link">
+                    <a href="https://github.com/Shaam143" target="_blank" class="home__social-link">
                         <i class='bx bxl-github'></i>
                     </a>
-                </ul>
+                </div>
 
-                <span class="footer__copy">
-                    &#169; Shaamalan Kanthan. All rights reserved
-                </span>
+                <a href="#about" class="home__scroll">
+                    <i class='bx bx-mouse home__scroll-icon'></i>
+                    <span class="home__scroll-name">Scroll Down</span>
+                </a>
             </div>
-        </footer>
+        </section>
 
-        <script src="https://unpkg.com/scrollreveal"></script>
+        <section class="about section" id="about">
+            <span class="section__subtitle">My Intro</span>
+            <h2 class="section__title">About Me</h2>
 
-        <script src="https://unpkg.com/swiper@8/swiper-bundle.min.js"></script>
+            <div class="about__container container grid">
+                <img src="assets/img/about.jpg" alt="" class="about__img">
 
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/mixitup/3.3.1/mixitup.min.js"></script>
+                <div class="about__data">
+                    <div class="about__info">
+                        <div class="about__box">
+                            <i class='bx bx-award about__icon'></i>
+                            <h3 class="about__title">Experience</h3>
+                            <span class="about__subtitle">6 Months Working</span>
+                        </div>
+                        <div class="about__box">
+                            <i class='bx bx-briefcase-alt about__icon'></i>
+                            <h3 class="about__title">Completed</h3>
+                            <span class="about__subtitle">10+ Projects</span>
+                        </div>
+                        <div class="about__box">
+                            <i class='bx bx-support about__icon'></i>
+                            <h3 class="about__title">Support</h3>
+                            <span class="about__subtitle">Open to Network</span>
+                        </div>
+                    </div>
 
-        <script src="assets/js/main.js"></script>
-    </body>
+                    <p class="about__description">
+                        I’m a second-year Computer Science student at UTHM specializing in web technology.
+                        With a strong foundation in front-end and back-end development, I work with Java, HTML5,
+                        and modern frameworks. I am actively involved in the Information Technology Club (ITC)
+                        and eager to explore software development and digital media.
+                    </p>
+
+                    <a href="#contact" class="button">Contact Me</a>
+                </div>
+            </div>
+        </section>
+
+        <section class="skills section" id="skills">
+            <span class="section__subtitle">My Abilities</span>
+            <h2 class="section__title">My Experience</h2>
+
+            <div class="skills__container container grid">
+                <div class="skills__content">
+                    <h3 class="skills__title">Frontend & Mobile</h3>
+                    <div class="skills__box">
+                        <div class="skills__group">
+                            <div class="skills__data">
+                                <i class='bx bxs-badge-check'></i>
+                                <div>
+                                    <h3 class="skills__name">HTML/CSS</h3>
+                                    <span class="skills__level">Advanced</span>
+                                </div>
+                            </div>
+                            <div class="skills__data">
+                                <i class='bx bxs-badge-check'></i>
+                                <div>
+                                    <h3 class="skills__name">JavaScript</h3>
+                                    <span class="skills__level">Intermediate</span>
+                                </div>
+                            </div>
+                            <div class="skills__data">
+                                <i class='bx bxs-badge-check'></i>
+                                <div>
+                                    <h3 class="skills__name">Flutter</h3>
+                                    <span class="skills__level">Intermediate</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="skills__group">
+                            <div class="skills__data">
+                                <i class='bx bxs-badge-check'></i>
+                                <div>
+                                    <h3 class="skills__name">Dart</h3>
+                                    <span class="skills__level">Intermediate</span>
+                                </div>
+                            </div>
+                            <div class="skills__data">
+                                <i class='bx bxs-badge-check'></i>
+                                <div>
+                                    <h3 class="skills__name">Bootstrap</h3>
+                                    <span class="skills__level">Basic</span>
+                                </div>
+                            </div>
+                            <div class="skills__data">
+                                <i class='bx bxs-badge-check'></i>
+                                <div>
+                                    <h3 class="skills__name">Git</h3>
+                                    <span class="skills__level">Intermediate</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="skills__content">
+                    <h3 class="skills__title">Backend Development</h3>
+                    <div class="skills__box">
+                        <div class="skills__group">
+                            <div class="skills__data">
+                                <i class='bx bxs-badge-check'></i>
+                                <div>
+                                    <h3 class="skills__name">PHP</h3>
+                                    <span class="skills__level">Intermediate</span>
+                                </div>
+                            </div>
+                            <div class="skills__data">
+                                <i class='bx bxs-badge-check'></i>
+                                <div>
+                                    <h3 class="skills__name">Java</h3>
+                                    <span class="skills__level">Intermediate</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="skills__group">
+                            <div class="skills__data">
+                                <i class='bx bxs-badge-check'></i>
+                                <div>
+                                    <h3 class="skills__name">Firebase</h3>
+                                    <span class="skills__level">Basic</span>
+                                </div>
+                            </div>
+                            <div class="skills__data">
+                                <i class='bx bxs-badge-check'></i>
+                                <div>
+                                    <h3 class="skills__name">MySQL</h3>
+                                    <span class="skills__level">Intermediate</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="skills section">
+            <span class="section__subtitle">My Journey</span>
+            <h2 class="section__title">Leadership & Work</h2>
+
+            <div class="skills__container container grid">
+
+                <div class="skills__content">
+                    <h3 class="skills__title">Student Leadership</h3>
+
+                    <div class="skills__box">
+                        <div class="skills__group">
+                            <div class="skills__data">
+                                <i class='bx bxs-medal'></i>
+                                <div>
+                                    <h3 class="skills__name">Strategic Advisor</h3>
+                                    <span class="skills__level">ITC (2026)</span>
+                                </div>
+                            </div>
+
+                            <div class="skills__data">
+                                <i class='bx bxs-medal'></i>
+                                <div>
+                                    <h3 class="skills__name">President</h3>
+                                    <span class="skills__level">ITC (2025)</span>
+                                </div>
+                            </div>
+
+                            <div class="skills__data">
+                                <i class='bx bxs-medal'></i>
+                                <div>
+                                    <h3 class="skills__name">Head Prefect</h3>
+                                    <span class="skills__level">School Prefect (2025)</span>
+                                </div>
+                            </div>
+
+                            <div class="skills__data">
+                                <i class='bx bxs-medal'></i>
+                                <div>
+                                    <h3 class="skills__name">Exco Multimedia</h3>
+                                    <span class="skills__level">ITC (2024)</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="skills__group">
+                            <div class="skills__data">
+                                <i class='bx bxs-camera'></i>
+                                <div>
+                                    <h3 class="skills__name">Head Photographer</h3>
+                                    <span class="skills__level">The Lasallian (2018-2025)</span>
+                                </div>
+                            </div>
+
+                            <div class="skills__data">
+                                <i class='bx bxs-medal'></i>
+                                <div>
+                                    <h3 class="skills__name">Asst. Secretary</h3>
+                                    <span class="skills__level">Student Rep. Council (2021-23)</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="skills__content">
+                    <h3 class="skills__title">Work Experience</h3>
+
+                    <div class="skills__box">
+                        <div class="skills__group">
+                            <div class="skills__data">
+                                <i class='bx bxs-briefcase-alt-2'></i>
+                                <div>
+                                    <h3 class="skills__name">Sales Assistant</h3>
+                                    <span class="skills__level">iStore Digital Mall <br> (Aug 2024 - Sept 2025)</span>
+                                </div>
+                            </div>
+
+                            <div class="skills__data">
+                                <i class='bx bxs-coffee'></i>
+                                <div>
+                                    <h3 class="skills__name">Tearista</h3>
+                                    <span class="skills__level">Tealive <br> (May 2023 - Sept 2023)</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="services section">
+            <span class="section__subtitle">My Services</span>
+            <h2 class="section__title">What I Offer</h2>
+
+            <div class="services__container container grid">
+                <div class="services__card">
+                    <h3 class="services__title">Web <br> Development</h3>
+                    <span class="services__button">
+                        See more <i class='bx bx-right-arrow-alt services__icon'></i>
+                    </span>
+
+                    <div class="services__modal">
+                        <div class="services__modal-content">
+                            <i class='bx bx-x services__modal-close'></i>
+                            <h3 class="services__modal-title">Web Development</h3>
+                            <p class="services__modal-description">
+                                Creating efficient and user-friendly web applications using modern web technologies.
+                            </p>
+                            <ul class="services__modal-list">
+                                <li class="services__modal-item">
+                                    <i class='bx bx-check services__modal-icon'></i>
+                                    <p class="services__modal-info">Responsive website design.</p>
+                                </li>
+                                <li class="services__modal-item">
+                                    <i class='bx bx-check services__modal-icon'></i>
+                                    <p class="services__modal-info">HTML5, CSS3, and JavaScript integration.</p>
+                                </li>
+                                <li class="services__modal-item">
+                                    <i class='bx bx-check services__modal-icon'></i>
+                                    <p class="services__modal-info">Backend connectivity with PHP/MySQL.</p>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="services__card">
+                    <h3 class="services__title">Mobile App <br> Development</h3>
+                    <span class="services__button">
+                        See more <i class='bx bx-right-arrow-alt services__icon'></i>
+                    </span>
+
+                    <div class="services__modal">
+                        <div class="services__modal-content">
+                            <i class='bx bx-x services__modal-close'></i>
+                            <h3 class="services__modal-title">Mobile Development</h3>
+                            <p class="services__modal-description">
+                                Building cross-platform mobile applications that solve real-world problems.
+                            </p>
+                            <ul class="services__modal-list">
+                                <li class="services__modal-item">
+                                    <i class='bx bx-check services__modal-icon'></i>
+                                    <p class="services__modal-info">Flutter & Dart development.</p>
+                                </li>
+                                <li class="services__modal-item">
+                                    <i class='bx bx-check services__modal-icon'></i>
+                                    <p class="services__modal-info">UI/UX implementation for mobile.</p>
+                                </li>
+                                <li class="services__modal-item">
+                                    <i class='bx bx-check services__modal-icon'></i>
+                                    <p class="services__modal-info">Integration with Firebase databases.</p>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="services__card">
+                    <h3 class="services__title">Digital <br> Media</h3>
+                    <span class="services__button">
+                        See more <i class='bx bx-right-arrow-alt services__icon'></i>
+                    </span>
+
+                    <div class="services__modal">
+                        <div class="services__modal-content">
+                            <i class='bx bx-x services__modal-close'></i>
+                            <h3 class="services__modal-title">Digital Media</h3>
+                            <p class="services__modal-description">
+                                Designing creative visual assets for events and promotions.
+                            </p>
+                            <ul class="services__modal-list">
+                                <li class="services__modal-item">
+                                    <i class='bx bx-check services__modal-icon'></i>
+                                    <p class="services__modal-info">Poster and banner design.</p>
+                                </li>
+                                <li class="services__modal-item">
+                                    <i class='bx bx-check services__modal-icon'></i>
+                                    <p class="services__modal-info">Event promotional materials.</p>
+                                </li>
+                                <li class="services__modal-item">
+                                    <i class='bx bx-check services__modal-icon'></i>
+                                    <p class="services__modal-info">Digital content creation.</p>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="work section" id="work">
+            <span class="section__subtitle">My Portfolio</span>
+            <h2 class="section__title">Recent Works</h2>
+
+            <div class="work__filters">
+                <span class="work__item active-work" data-filter='all'>All</span>
+                <span class="work__item" data-filter='.web'>Web</span>
+                <span class="work__item" data-filter='.movil'>Mobile</span>
+                <span class="work__item" data-filter='.design'>Media</span>
+            </div>
+
+            <div class="work__container container grid">
+
+                <div class="work__card mix web">
+                    <div class="iframe-container">
+                        <iframe class="desktop-iframe" src="https://devcafe-fsktm.vercel.app/" loading="lazy"
+                            title="DevCafe"></iframe>
+                    </div>
+
+                    <h3 class="work__title">DevCafe</h3>
+                    <span class="work__button">University Cafe App</span>
+
+                    <div style="display: flex; gap: 10px; margin-top: 10px;">
+                        <a href="https://devcafe-fsktm.vercel.app/" target="_blank" class="work__button">
+                            Live Site <i class='bx bx-link-external work__icon'></i>
+                        </a>
+                        <a href="https://github.com/Shaam143/devcafe" target="_blank" class="work__button">
+                            GitHub <i class='bx bxl-github work__icon'></i>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="work__card mix web">
+                    <div class="iframe-container">
+                        <iframe class="desktop-iframe" src="https://e-recruitment-nrvt.onrender.com/" loading="lazy"
+                            title="CareerConnect"></iframe>
+                    </div>
+
+                    <h3 class="work__title">CareerConnect</h3>
+                    <span class="work__button">Recruitment Platform</span>
+
+                    <div style="display: flex; gap: 10px; margin-top: 10px;">
+                        <a href="https://e-recruitment-nrvt.onrender.com/" target="_blank" class="work__button">
+                            Live Site <i class='bx bx-link-external work__icon'></i>
+                        </a>
+                        <a href="https://github.com/danielimans/e-Recruitment" target="_blank" class="work__button">
+                            GitHub <i class='bx bxl-github work__icon'></i>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="work__card mix web">
+                    <div class="iframe-container">
+                        <iframe class="desktop-iframe" src="https://snackstop-leed.vercel.app/" loading="lazy"
+                            title="SnackStop"></iframe>
+                    </div>
+
+                    <h3 class="work__title">SnackStop</h3>
+                    <span class="work__button">Food Ordering Website</span>
+
+                    <div style="display: flex; gap: 10px; margin-top: 10px;">
+                        <a href="https://snackstop-leed.vercel.app/" target="_blank" class="work__button">
+                            Live Site <i class='bx bx-link-external work__icon'></i>
+                        </a>
+                        <a href="https://github.com/Shaam143/snackstop" target="_blank" class="work__button">
+                            GitHub <i class='bx bxl-github work__icon'></i>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="work__card mix web">
+                    <div class="iframe-container">
+                        <iframe class="desktop-iframe" src="https://smart-bill-split.vercel.app/" loading="lazy"
+                            title="Smart Bill Split"></iframe>
+                    </div>
+
+                    <h3 class="work__title">Smart Bill Split</h3>
+                    <span class="work__button">Web Application</span>
+                    <a href="https://smart-bill-split.vercel.app/" target="_blank" class="work__button">
+                        Live Demo <i class='bx bx-link-external work__icon'></i>
+                    </a>
+                </div>
+
+                <div class="work__card work__card_text_only mix web">
+                    <h3 class="work__title">TaskFlow Academy</h3>
+                    <span class="work__button">Educational Platform</span>
+                    <a href="https://github.com/Shaam143/taskflow-academy" target="_blank" class="work__button">
+                        View on GitHub <i class='bx bxl-github work__icon'></i>
+                    </a>
+                </div>
+
+                <div class="work__card work__card_text_only mix web">
+                    <h3 class="work__title">Restaurant Stock System</h3>
+                    <span class="work__button">PHP & MySQL System</span>
+                    <a href="https://www.linkedin.com/in/shaamalan-kanthan/details/projects/" target="_blank"
+                        class="work__button">
+                        View on LinkedIn <i class='bx bx-right-arrow-alt work__icon'></i>
+                    </a>
+                </div>
+
+                <div class="work__card work__card_text_only mix web">
+                    <h3 class="work__title">VibeHire</h3>
+                    <span class="work__button">Job Search Website</span>
+                    <a href="https://www.linkedin.com/in/shaamalan-kanthan/details/projects/" target="_blank"
+                        class="work__button">
+                        View on LinkedIn <i class='bx bx-right-arrow-alt work__icon'></i>
+                    </a>
+                </div>
+
+                <div class="work__card work__card_text_only mix web">
+                    <h3 class="work__title">Health Calculator</h3>
+                    <span class="work__button">SOAP Web Services</span>
+                    <a href="https://www.linkedin.com/in/shaamalan-kanthan/details/projects/" target="_blank"
+                        class="work__button">
+                        Documentation <i class='bx bx-right-arrow-alt work__icon'></i>
+                    </a>
+                </div>
+
+            </div>
+        </section>
+
+        <section class="testimonial section">
+            <span class="section__subtitle">References</span>
+            <h2 class="section__title">Endorsements</h2>
+
+            <div class="testimonial__container container swiper">
+                <div class="swiper-wrapper">
+                    <div class="testimonial__card swiper-slide">
+                        <img src="assets/img/testimonial1.png" alt="" class="testimonial__img">
+                        <h3 class="testimonial__name">Tealive Manager</h3>
+                        <p class="testimonial__description">
+                            Shaamalan showed great dedication and teamwork during his time as a Tearista.
+                        </p>
+                    </div>
+
+                    <div class="testimonial__card swiper-slide">
+                        <img src="assets/img/testimonial2.png" alt="" class="testimonial__img">
+                        <h3 class="testimonial__name">ITC President</h3>
+                        <p class="testimonial__description">
+                            A proactive member of the club, always ready to help with technical events like DINS.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="swiper-pagination"></div>
+            </div>
+        </section>
+
+        <section class="contact section" id="contact">
+            <span class="section__subtitle">Get in touch</span>
+            <h2 class="section__title">Contact Me</h2>
+
+            <div class="contact__container container grid">
+                <div class="contact__content">
+                    <h3 class="contact__title">Talk to me</h3>
+
+                    <div class="contact__info">
+                        <div class="contact__card">
+                            <i class='bx bx-mail-send contact__card-icon'></i>
+                            <h3 class="contact__card-title">Email</h3>
+                            <span class="contact__card-data">ai230133@student.uthm.edu.my</span>
+                            <a href="mailto:ai230133@student.uthm.edu.my" class="contact__button">
+                                Write me <i class='bx bx-right-arrow-alt contact__button-icon'></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="footer__container container">
+            <h1 class="footer__title">Shaamalan</h1>
+
+            <ul class="footer__list">
+                <li>
+                    <a href="#about" class="footer__link">About</a>
+                </li>
+                <li>
+                    <a href="#work" class="footer__link">Projects</a>
+                </li>
+                <li>
+                    <a href="#contact" class="footer__link">Contact</a>
+                </li>
+            </ul>
+
+            <ul class="footer__social">
+                <a href="https://www.linkedin.com/in/shaamalan-kanthan/" target="_blank" class="footer__social-link">
+                    <i class='bx bxl-linkedin-square'></i>
+                </a>
+                <a href="https://github.com/Shaam143" target="_blank" class="footer__social-link">
+                    <i class='bx bxl-github'></i>
+                </a>
+            </ul>
+
+            <span class="footer__copy">
+                &#169; Shaamalan Kanthan. All rights reserved
+            </span>
+        </div>
+    </footer>
+
+    <script src="https://unpkg.com/scrollreveal"></script>
+    <script src="https://unpkg.com/swiper@8/swiper-bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mixitup/3.3.1/mixitup.min.js"></script>
+    <script src="assets/js/main.js"></script>
+</body>
+
 </html>
