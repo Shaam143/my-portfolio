@@ -1,134 +1,137 @@
-/*=============== CHANGE BACKGROUND HEADER ===============*/
-function scrollHeader(){
-    const header = document.getElementById('header')
-    // When the scroll is greater than 50 viewport height, add the scroll-header class to the header tag
-    if(this.scrollY >= 50) header.classList.add('scroll-header'); else header.classList.remove('scroll-header')
-}
-window.addEventListener('scroll', scrollHeader)
+/*============ SCROLL HEADER ============*/
+const header = document.getElementById('header');
+window.addEventListener('scroll', () => {
+  header.classList.toggle('scrolled', window.scrollY >= 60);
+});
 
-/*=============== SERVICES MODAL ===============*/
-const modalViews = document.querySelectorAll('.services__modal'),
-      modalBtns = document.querySelectorAll('.services__button'),
-      modalClose = document.querySelectorAll('.services__modal-close')
+/*============ MOBILE HAMBURGER ============*/
+const hamburger  = document.getElementById('nav-hamburger');
+const mobileMenu = document.getElementById('nav-mobile');
 
-let modal = function(modalClick){
-    modalViews[modalClick].classList.add('active-modal')
-}
+hamburger.addEventListener('click', () => {
+  mobileMenu.classList.toggle('open');
+  hamburger.classList.toggle('bx-x');
+});
 
-modalBtns.forEach((mb, i) =>{
-    mb.addEventListener('click', () =>{
-        modal(i)
-    })
-})
+// Close on link click
+document.querySelectorAll('.nav__mobile .nav__link').forEach(link => {
+  link.addEventListener('click', () => {
+    mobileMenu.classList.remove('open');
+    hamburger.classList.remove('bx-x');
+  });
+});
 
-modalClose.forEach((mc) =>{
-    mc.addEventListener('click', () =>{
-        modalViews.forEach((mv) =>{
-            mv.classList.remove('active-modal')
-        })
-    })
-})
+/*============ ACTIVE NAV LINK ON SCROLL ============*/
+const sections  = document.querySelectorAll('section[id]');
+const navLinks  = document.querySelectorAll('.nav__list .nav__link');
 
-/*=============== MIXITUP FILTER PORTFOLIO ===============*/
-let mixerPortfolio = mixitup('.work__container', {
-    selectors: {
-        target: '.work__card'
-    },
-    animation: {
-        duration: 300
+function onScroll() {
+  const scrollY = window.scrollY;
+
+  sections.forEach(sec => {
+    const top    = sec.offsetTop - 100;
+    const height = sec.offsetHeight;
+    const id     = sec.getAttribute('id');
+    const link   = document.querySelector(`.nav__list a[href="#${id}"]`);
+
+    if (link) {
+      if (scrollY >= top && scrollY < top + height) {
+        navLinks.forEach(l => l.classList.remove('active'));
+        link.classList.add('active');
+      }
     }
+  });
+}
+
+window.addEventListener('scroll', onScroll);
+
+/*============ SCROLL UP BUTTON ============*/
+const scrollUpBtn = document.getElementById('scroll-up');
+window.addEventListener('scroll', () => {
+  scrollUpBtn.classList.toggle('show', window.scrollY >= 400);
 });
 
-/* Link active work */ 
-const linkWork = document.querySelectorAll('.work__item')
+/*============ WORK FILTER (MixItUp) ============*/
+const workContainer = document.getElementById('work-container');
 
-function activeWork(){
-    linkWork.forEach(l=> l.classList.remove('active-work'))
-    this.classList.add('active-work')
+if (workContainer) {
+  const mixer = mixitup(workContainer, {
+    selectors: { target: '.work-card' },
+    animation: { duration: 280, effects: 'fade translateY(20px)' }
+  });
+
+  document.querySelectorAll('.work__filter-btn').forEach(btn => {
+    btn.addEventListener('click', function () {
+      document.querySelectorAll('.work__filter-btn').forEach(b => b.classList.remove('active-work'));
+      this.classList.add('active-work');
+      const filter = this.dataset.filter;
+      mixer.filter(filter === 'all' ? 'all' : filter);
+    });
+  });
 }
 
-linkWork.forEach(l=> l.addEventListener('click', activeWork))
+/*============ IFRAME SCALE ============*/
+function scaleIframes() {
+  document.querySelectorAll('.browser-frame__viewport').forEach(vp => {
+    const w = vp.offsetWidth;
+    if (!w) return;
+    const scale = w / 1440;
+    vp.style.setProperty('--iframe-scale', scale);
+    // Adjust the viewport height so scaled content fills it
+    // iframe renders at 900px tall; scale brings it to: 900 * scale
+    vp.style.height = Math.round(900 * scale) + 'px';
+  });
+}
 
-/*=============== SWIPER TESTIMONIAL ===============*/
-let swiperTestimonial = new Swiper(".testimonial__container", {
-    spaceBetween: 24,
-    loop: true,
-    grabCursor: true,
+scaleIframes();
+window.addEventListener('resize', scaleIframes);
 
-    pagination: {
-      el: ".swiper-pagination",
-      clickable: true,
-    },
-    breakpoints: {
-        576: {
-          slidesPerView: 2,
-        },
-        768: {
-          slidesPerView: 2,
-          spaceBetween: 48,
-        },
-    },
+
+/*============ THEME TOGGLE ============*/
+const themeBtn  = document.getElementById('theme-button');
+const LIGHT     = 'light-theme';
+const ICON_SUN  = 'bx-sun';
+const ICON_MOON = 'bx-moon';
+
+const savedTheme = localStorage.getItem('theme');
+const savedIcon  = localStorage.getItem('icon');
+
+if (savedTheme === 'light') {
+  document.body.classList.add(LIGHT);
+  themeBtn.querySelector('i').className = 'bx ' + ICON_SUN;
+}
+
+themeBtn.addEventListener('click', () => {
+  const isLight = document.body.classList.toggle(LIGHT);
+  const icon    = themeBtn.querySelector('i');
+  icon.className = 'bx ' + (isLight ? ICON_SUN : ICON_MOON);
+  localStorage.setItem('theme', isLight ? 'light' : 'dark');
+  localStorage.setItem('icon',  isLight ? ICON_SUN : ICON_MOON);
 });
 
-/*=============== SCROLL SECTIONS ACTIVE LINK ===============*/
-const sections = document.querySelectorAll('section[id]')
 
-function scrollActive(){
-    const scrollY = window.pageYOffset
-
-    sections.forEach(current =>{
-        const sectionHeight = current.offsetHeight,
-              sectionTop = current.offsetTop - 58,
-              sectionId = current.getAttribute('id')
-
-        if(scrollY > sectionTop && scrollY <= sectionTop + sectionHeight){
-            document.querySelector('.nav__menu a[href*=' + sectionId + ']').classList.add('active-link')
-        }else{
-            document.querySelector('.nav__menu a[href*=' + sectionId + ']').classList.remove('active-link')
-        }
-    })
-}
-window.addEventListener('scroll', scrollActive)
-
-/*=============== LIGHT DARK THEME ===============*/ 
-const themeButton = document.getElementById('theme-button')
-const lightTheme = 'light-theme'
-const iconTheme = 'bx-sun'
-
-// Previously selected topic (if user selected)
-const selectedTheme = localStorage.getItem('selected-theme')
-const selectedIcon = localStorage.getItem('selected-icon')
-
-// We obtain the current theme that the interface has by validating the light-theme class
-const getCurrentTheme = () => document.body.classList.contains(lightTheme) ? 'dark' : 'light'
-const getCurrentIcon = () => themeButton.classList.contains(iconTheme) ? 'bx bx-moon' : 'bx bx-sun'
-
-// We validate if the user previously chose a topic
-if (selectedTheme) {
-  // If the validation is fulfilled, we ask what the issue was to know if we activated or deactivated the light
-  document.body.classList[selectedTheme === 'dark' ? 'add' : 'remove'](lightTheme)
-  themeButton.classList[selectedIcon === 'bx bx-moon' ? 'add' : 'remove'](iconTheme)
-}
-
-// Activate / deactivate the theme manually with the button
-themeButton.addEventListener('click', () => {
-    // Add or remove the light / dark theme
-    document.body.classList.toggle(lightTheme)
-    themeButton.classList.toggle(iconTheme)
-    // We save the theme and the current icon that the user chose
-    localStorage.setItem('selected-theme', getCurrentTheme())
-    localStorage.setItem('selected-icon', getCurrentIcon())
-})
-
-/*=============== SCROLL REVEAL ANIMATION ===============*/
+/*============ SCROLL REVEAL ============*/
 const sr = ScrollReveal({
-    origin: 'top',
-    distance: '60px',
-    duration: 2500,
-    delay: 400,
-    // reset: true,
-})
+  origin: 'bottom',
+  distance: '28px',
+  duration: 800,
+  delay: 80,
+  easing: 'cubic-bezier(0.16, 1, 0.3, 1)',
+  reset: false,
+});
 
-sr.reveal(`.home__data`)
-sr.reveal(`.home__handle`, {delay: 700})
-sr.reveal(`.home__social, .home__scroll`, {delay: 900, origin: 'bottom'})
+sr.reveal('.hero__left',           { origin: 'left', distance: '40px' });
+sr.reveal('.hero__right',          { origin: 'right', distance: '40px', delay: 200 });
+sr.reveal('.section__num',         { origin: 'left', delay: 50 });
+sr.reveal('.section__title-wrap',  { delay: 100 });
+sr.reveal('.about__img-col',       { origin: 'left' });
+sr.reveal('.about__content-col',   { origin: 'right', delay: 150 });
+sr.reveal('.skills__col',          { interval: 150 });
+sr.reveal('.tl-item',              { interval: 80 });
+sr.reveal('.edu-card',             { interval: 120 });
+sr.reveal('.cert-card',            { interval: 100 });
+sr.reveal('.service-card',         { interval: 100 });
+sr.reveal('.work-card',            { interval: 60 });
+sr.reveal('.testimonial-card',     { interval: 120 });
+sr.reveal('.contact__left',        { origin: 'left' });
+sr.reveal('.contact__form',        { origin: 'right', delay: 150 });
